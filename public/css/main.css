@@ -2,3 +2,54 @@
     border-bottom: 1px darkslategray dotted;
     cursor: pointer;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    padding: 10px;
+}
+
+header nav {
+    display: flex;
+    justify-content: center;
+}
+
+header nav a {
+    margin: 0 20px;
+    text-decoration: none;
+    color: #fff;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+}
+
+.editor-container, .phonebook-container {
+    padding: 20px;
+}
+
+textarea {
+    width: 400px;
+    height: 150px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
