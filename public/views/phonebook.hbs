@@ -29,3 +29,17 @@
     {{/each}}
   </tbody>
 </table>
+
+<h2>Add a New Contact</h2>
+<form action="/phonebook" method="POST">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" required><br><br>
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required><br><br>
+
+  <label for="phoneNumbers">Phone Numbers (comma-separated):</label>
+  <input type="text" id="phoneNumbers" name="phoneNumbers" required><br><br>
+
+  <button type="submit">Add Contact</button>
+</form>

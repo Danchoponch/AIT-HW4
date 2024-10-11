@@ -41,7 +41,7 @@ app.get('/editor', (req, res) => {
   res.render('editor'); // Renders editor.hbs template
 });
 
-let initContacts = []
+let initContacts = [];
 
 function loadContacts() {
     return new Promise((resolve, reject) => {
@@ -63,6 +63,22 @@ function loadContacts() {
         });
     });
 }
+
+function decorate(contact) {
+    const contactInfo = `Email: ${contact.email}\nPhone Numbers: ${contact.phoneNumbers.join(', ')}`;
+    return `<span class="contact-info" title="${contactInfo}">${contact.name}</span>`;
+}
+
+function getModifiedText(originalText, contacts) {
+  let modifiedText = originalText;
+  
+  contacts.forEach(contact => {
+    modifiedText = modifiedText.split(contact.name).join(decorate(contact));
+  });
+
+  return modifiedText;
+}
+
 // Renders phonebook.hbs template
 app.get('/phonebook', (req, res) => {
     const searchTerm = req.query.contact ? req.query.contact.toLowerCase() : '';
@@ -76,6 +92,30 @@ app.get('/phonebook', (req, res) => {
     res.render('phonebook', { initContacts: filteredContacts });
   });
 
+
+app.post('/phonebook', (req, res) => {
+    const { name, email, phoneNumbers } = req.body;
+
+    const newContact = new Contact(name, email, phoneNumbers.split(',').map(num => num.trim()));
+
+    initContacts.push(newContact);
+
+    res.redirect(303, '/phonebook');
+});
+
+app.post('/editor', (req, res) => {
+    const originalText = req.body.formText;
+    
+    if (!originalText) {
+        return res.render('editor', { error: 'Please enter some text to modify.' });
+    }
+    
+    
+    const modifiedText = getModifiedText(originalText, initContacts);
+  
+    res.render('editor', { originalText, modifiedText });
+  });
+
 await loadContacts();
 const PORT = 3000;
 // Start the server
@@ -83,5 +123,5 @@ const server = app.listen(PORT, () => {
   console.log(`Server started; type CTRL+C to shut down`);
 });
 
-export {app, server};
+export {app, server, decorate};
 

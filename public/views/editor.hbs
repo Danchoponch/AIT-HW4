@@ -1,7 +1,19 @@
 <div class="editor-container">
     <h2>Editor Page</h2>
-    <form action="/submit" method="POST">
-        <textarea name="formText" placeholder="Enter your text..."></textarea>
+    <!-- Form for submitting the text -->
+    <form action="/editor" method="POST">
+        <textarea name="formText" rows="4" cols="50" placeholder="Enter your text..."></textarea>
         <button type="submit">Submit</button>
     </form>
+    
+    <!-- Display original and modified text -->
+    {{#if originalText}}
+    <div class="result-section">
+        <h3>Original Text:</h3>
+        <div>{{originalText}}</div>
+        
+        <h3>Edited Text:</h3>
+        <div class="modified-text">{{{modifiedText}}}</div> <!-- Triple curly braces to render HTML -->
+    </div>
+    {{/if}}
 </div>

@@ -7,4 +7,4 @@ class Contact{
     }
 }
 
-export {Contact}
+export {Contact};
