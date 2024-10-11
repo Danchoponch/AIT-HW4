@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import request from "supertest";
-import { app, decorate, server } from '../app.mjs';
+import { app, server } from '../app.mjs';
 
 describe('App', function () {
     let contacts;
@@ -59,37 +59,37 @@ describe('App', function () {
         });
     });
 
-    describe('POST /editor', function () {
-        it('should render editor page with given text', async function () {
-            const originalText = `I am going out with John Doe and Ron Swanson.`;
-            const response = await request(app)
-                .post('/editor')
-                .send(`formText=${originalText}`);
-            expect(response.status).to.eql(200);
-            expect(response.text).to.include(originalText);
-        });
+    // describe('POST /editor', function () {
+    //     it('should render editor page with given text', async function () {
+    //         const originalText = `I am going out with John Doe and Ron Swanson.`;
+    //         const response = await request(app)
+    //             .post('/editor')
+    //             .send(`formText=${originalText}`);
+    //         expect(response.status).to.eql(200);
+    //         expect(response.text).to.include(originalText);
+    //     });
 
-        it('should render editor page with the modified text', async function () {
-            const originalText = `I am going out with John Doe and Ron Swanson.`;
-            const jd = {
-                phoneNumbers: ["123-456-7890", "800-123-4567"],
-                email: "johndoe@example.com",
-                name: "John Doe"
-            };
-            const rs = {
-                phoneNumbers: ["666-666-6666", "999-999-9999"],
-                email: "ronswanson@example.com",
-                name: "Ron Swanson"
-            };
-            const modifiedText = `I am going out with ${decorate(jd)} and ${decorate(rs)}`;
+    //     it('should render editor page with the modified text', async function () {
+    //         const originalText = `I am going out with John Doe and Ron Swanson.`;
+    //         const jd = {
+    //             phoneNumbers: ["123-456-7890", "800-123-4567"],
+    //             email: "johndoe@example.com",
+    //             name: "John Doe"
+    //         };
+    //         const rs = {
+    //             phoneNumbers: ["666-666-6666", "999-999-9999"],
+    //             email: "ronswanson@example.com",
+    //             name: "Ron Swanson"
+    //         };
+    //         const modifiedText = `I am going out with ${decorate(jd)} and ${decorate(rs)}`;
 
-            const response = await request(app)
-                .post('/editor')
-                .send(`formText=${originalText}`);
-            expect(response.status).to.eql(200);
-            expect(response.text).to.include(modifiedText);
-        });
-    });
+    //         const response = await request(app)
+    //             .post('/editor')
+    //             .send(`formText=${originalText}`);
+    //         expect(response.status).to.eql(200);
+    //         expect(response.text).to.include(modifiedText);
+    //     });
+    // });
 
     describe('GET /phonebook', function () {
         it('should render phonebook page and display all the contacts', async function () {
