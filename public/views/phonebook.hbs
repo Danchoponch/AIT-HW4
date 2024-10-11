@@ -1,4 +1,31 @@
-<div class="phonebook-container">
-    <h2>PhoneBook Page</h2>
-    <p>PhoneBook page content goes here.</p>
-</div>
+<h1>PhoneBook</h1>
+
+<form action="/phonebook" method="GET" style="margin-bottom: 20px;">
+  <input type="text" name="contact" placeholder="Search contacts..." required>
+  <button type="submit">Search</button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone Number(s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each initContacts}}
+    <tr>
+      <td>{{this.name}}</td>
+      <td>{{this.email}}</td>
+      <td>
+        <ul>
+          {{#each this.phoneNumbers}}
+          <li>{{this}}</li>
+          {{/each}}
+        </ul>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

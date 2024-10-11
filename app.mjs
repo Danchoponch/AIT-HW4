@@ -2,6 +2,8 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
+import { Contact } from './contact.mjs';
 
 // directory name
 const __filename = fileURLToPath(import.meta.url);
@@ -39,12 +41,43 @@ app.get('/editor', (req, res) => {
   res.render('editor'); // Renders editor.hbs template
 });
 
+let initContacts = []
+
+function loadContacts() {
+    return new Promise((resolve, reject) => {
+        fs.readFile(path.join(__dirname, 'code-samples', 'phonebook.json'), 'utf-8', (err, data) => {
+            if (err) {
+                reject('Error reading the file:', err);
+            } else {
+                try {
+
+                    const contactData = JSON.parse(data);
+                    initContacts = contactData.map(item => new Contact(item.name, item.email, item.phoneNumbers));
+                    console.log(initContacts);
+
+                    resolve(); 
+                } catch (parseError) {
+                    reject('Error parsing JSON:', parseError);
+                }
+            }
+        });
+    });
+}
+// Renders phonebook.hbs template
 app.get('/phonebook', (req, res) => {
-  res.render('phonebook'); // Renders phonebook.hbs template
-});
+    const searchTerm = req.query.contact ? req.query.contact.toLowerCase() : '';
 
+  
+    const filteredContacts = initContacts.filter(contact => {
+        const contactString = `${contact.name} ${contact.email} ${contact.phoneNumbers.join(' ')}`.toLowerCase();
+        return contactString.includes(searchTerm);
+    });
+
+    res.render('phonebook', { initContacts: filteredContacts });
+  });
+
+await loadContacts();
 const PORT = 3000;
-
 // Start the server
 const server = app.listen(PORT, () => {
   console.log(`Server started; type CTRL+C to shut down`);
